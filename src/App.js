@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css"; // Import CSS file for styling
 
-function App() {
+const customDictionary = {
+  teh: "the",
+  wrok: "work",
+  fot: "for",
+  exampl: "example",
+};
+
+const SpellCheck = () => {
+  const [inputText, setInputText] = useState("");
+  const [correction, setCorrection] = useState("");
+
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value.toLowerCase();
+    setInputText(inputValue);
+    setCorrection("");
+    const words = inputValue.split(" ");
+    for (let word of words) {
+      if (customDictionary[word]) {
+        setCorrection(customDictionary[word]);
+        break;
+      }
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+    <div className="center">
+      <h1>Spell Check and Auto-Correction</h1>
+      <textarea
+        rows="4"
+        cols="50"
+        value={inputText}
+        onChange={handleInputChange}
+        placeholder="Enter text..."
+      ></textarea>
+      {correction && (
+        <p className="correction">
+          Did you mean:{" "}
+          <strong>
+            {correction.charAt(0).toLowerCase() + correction.slice(1)}
+          </strong>
+          ?
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      )}
     </div>
   );
-}
+};
 
-export default App;
+export default SpellCheck;
